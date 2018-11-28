@@ -1,8 +1,551 @@
-<html>
-  <head>
-    <title>index</title>
-  </head>
-  <body>
-    <p>sunxicong in github.io</p>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>俄罗斯方块</title>
+	<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+	<style>
+		#gameBox{
+			width: 370px;
+			height: 450px;
+			border: 10px solid #AA1276;
+			position: relative;
+			left: 50%;
+			top: 100px;
+			transform: translateX(-50%);
+			border-radius: 10px;
+		}
+		#boxLeft{
+			width: 115px;
+			height: 100%;
+			background-color: rgba(222,173,198,0.3);
+			border-right: 5px solid #5D12C1;
+			position: absolute;
+			left: 0;
+			top: 0;
+			
+			
+		}
+		#boxRight{
+			width: 250px;
+			height: 100%;
+			background-color: #5A6CE8;
+			position: absolute;
+			left: 120px;
+			top: 0;		
+			/*overflow: hidden;	*/
+		}
+		.title{
+			width: 100%;
+			height: 40px;
+			background-color: #62620A;
+			text-align: center;
+			font-size: 20px;
+			line-height: 40px;
+		}
+		.cont{
+			width: 100px;
+			height: 100px;
+			background-color: rgba(198,180,201,0);
+			border-color: rgba(198,180,201,0);
+			border-style: solid;
+			border-width: 5px 7.5px;
+			text-align: center;
+			line-height: 110px;
+			font-size: 40px;
+			position: relative;
+		}
+		.bok{
+			width: 21px;
+			height: 21px;
+			border: 2px solid #B7B9B7;
+			background-color: #6A836C;
+			border-radius: 2px; 	
+			position: absolute;
+			left: 0;
+			top: 0;	
+				
+		}
+		.btn{
+			width: 60px;
+			height: 20px;
+			background-color: red;
+			border: 10px solid red;
+			border-radius: 10px;
+			position: absolute;
+			bottom: 80px;
+			left: 85px;
+			text-align: center;
+			line-height: 20px;
+			cursor:pointer;
+		}
+		.btn:hover{
+			background-color: #B983AA;
+			border-color: #B983AA;
+		}
+		.par{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+
+		}
+	</style>
+</head>
+<body>
+	<div id="gameBox">
+		<div id="boxLeft">
+			<div class="title">SCORE</div>
+			<div id="score" class="cont" d="13">0</div>
+			<div class="title">NEXT</div>
+			<div id="next" class="cont"></div>
+			<div class="title">LEVEL</div>
+			<div id="level" class="cont">未设置</div>
+		</div>
+		<div id="boxRight">
+			<span id="star" class="btn">开始</span>								
+		</div>
+	</div>
+</body>
+<script>
+	var scoreView = document.getElementById("score");
+	/* 注释
+	  旋转
+	  先以任何一个形状举例
+	  L型
+	  一开始先生成4个div，排好为默认的L型，以后每次产这种图形时默认都一样
+	  然后创建一个对象用于存储当前屏幕上动的组件的状态
+	  取值cong0-3；另一个属性存放状态表，即该div在该图形要求“旋转”时该移动到哪里，存的值为
+	  [[offsetx,offsety],[offsetx,offsety],[offsetx,offsety],[offsetx,offsety]],有四组x，y对，x和y取值为整数
+	  上面的数组中第一个数组表示为：当从状态0变为1时该div移动单位，后面依次是：状态1->2,状态2->3,状态3-0.共四组转换表
+	  例：[1,3],解释为：水平方向向右移动1个单位，垂直方向向下移动3个单位。
+	  这种方式完成一轮变换后第一个初态和后面的初态位置都不一样。等待解决！
+	  这样四个div的下一位置也就确定了（用原来的位置加上偏移单位乘div宽就可以定位了）
+	  然后当旋转一次后让第一个属性++，再与转换表计算
+	  判断停止时
+
+	 */
+
+	function creatDivGroup(){
+		var bdColor = ['#C6C655','#81E55F','#BC815A','#76CB39','#24AFBF','#9D5893','#2C1C03','#17BCB7'];
+		var bgColor = ['#48489D','#B25FA2','#7C5286','#625040','#215D4B','#482CB4','#900824','#483921'];
+		var css = {
+			"borderColor":bdColor[randomNum(0,7)],
+			"backgroundColor":bgColor[randomNum(0,7)]
+		};
+		var obj = {
+			"div1":creatDivBlock(css),
+			"div2":creatDivBlock(css),
+			"div3":creatDivBlock(css),
+			"div4":creatDivBlock(css),
+			"stat": 0,
+			"mod": 0,
+			setViewPosition:function(){	
+				//函数作用：设置在“NEXT”窗口相对于父元素的位置
+				//一级随机数,用来生成数读取样式
+				var styleNum = randomNum(0,6);
+				// 二级随机数，查找样式内的不同状态
+				var rotNum;	
+				//初始形状表存储	
+				var styleTab = [
+					[//L型四种状态
+						//第一小组：1号div偏移量，第二小组类推
+						[[1,0],[1,1],[1,2],[2,2]],
+						[[0,2],[1,2],[2,2],[2,1]],
+						[[2,2],[2,1],[2,0],[1,0]],
+						[[3,1],[2,1],[1,1],[1,2]]
+					],[
+					//反L型
+						[[2,0],[2,1],[1,2],[2,2]],
+						[[0,1],[1,1],[2,2],[2,1]],
+						[[1,2],[1,1],[2,0],[1,0]],
+						[[3,2],[2,2],[1,1],[1,2]]
+					],[
+					//三角形，山形，T形
+						[[1,1],[0,2],[1,2],[2,2]],
+						[[1,1],[2,2],[2,1],[2,0]],
+						[[1,2],[2,1],[1,1],[0,1]],
+						[[2,1],[1,0],[1,1],[1,2]]
+					],[
+					//Z型
+						[[0,1],[1,1],[1,2],[2,2]],
+						[[1,2],[1,1],[2,1],[2,0]]
+					],[
+					//反Z型
+						[[1,1],[2,1],[0,2],[1,2]],
+						[[1,1],[1,0],[2,2],[2,1]]
+					],[
+					//线型			
+						[[1,0],[1,1],[1,2],[1,3]],
+						[[0,2],[1,2],[2,2],[3,2]]				
+					],[
+					//田字型
+						[[1,1],[2,1],[1,2],[2,2]]
+					]
+				]
+				if(styleNum > 5){
+					rotNum = 0;
+				}else if(styleNum > 2){
+					rotNum = randomNum(0,1);
+				}else{
+					rotNum = randomNum(0,3);
+				}
+				//测试，可以指定哪种图形
+				// styleNum = 3;
+				// rotNum = 0;
+				this.mod = styleNum;  //表明这是那种类型的图形
+				this.stat = rotNum;   //表明这是该图形的那个状态
+				var posTab = styleTab[styleNum][rotNum];
+				for(var i = 1;i < 5;i++){
+					this["div"+i].myOffsetX = posTab[i-1][0];
+					this["div"+i].myOffsetY = posTab[i-1][1];
+					this["div"+i].style.left = posTab[i-1][0] * 25 + "px";
+					this["div"+i].style.top = posTab[i-1][1] * 25 + "px";
+				}
+			},
+			setGamePosition:function(){
+				//函数作用：设置div在游戏窗口的出发位置
+				
+				for(var j = 1;j < 5;j++){
+					if(this["div"+j].myOffsetY -2 > -1){
+						if(isOver(this["div"+j].myOffsetY - 2,this["div"+j].myOffsetX + 3)){
+							console.log("初始化重叠了！")
+							return false;
+						}
+					}
+				}
+				for(var i = 1;i < 5;i++){
+					var offsetLeft = parseInt(this["div"+i].style.left);
+					var offsetTop = parseInt(this["div"+i].style.top);
+					this["div"+i].style.left = offsetLeft + 75 + "px";
+					this["div"+i].style.top = offsetTop - 50 + "px";
+					this["div"+i].myOffsetX += 3;
+					this["div"+i].myOffsetY -= 2;
+				}			
+			},
+			//旋转到下一个状态
+			next:function (){
+				//状态变化索引表
+				var divTransTab =[
+					[//L型
+						[[-1,2],[0,1],[1,0],[0,-1]],//从0变为1时四个div变换单位
+						[[1,0],[0,-1],[-1,-2],[-2,-1]],//从1变为2时四个div变换单位
+						[[1,-1],[0,0],[-1,1],[0,2]],//从2变为3时四个div变换单位
+						[[-2,-1],[-1,0],[0,1],[1,0]]//从3变为0时四个div变换单位
+					],[//反L型
+						[[-2,1],[-1,0],[1,0],[0,-1]],
+						[[1,1],[0,0],[0,-2],[-1,-1]],
+						[[1,-1],[0,0],[-2,0],[-1,1]],
+						[[-1,-2],[0,-1],[0,1],[1,0]]
+					],[//三角型
+						[[-1,0],[1,0],[0,-1],[-1,-2]],
+						[[1,1],[1,-1],[0,0],[-1,1]],
+						[[1,-1],[-1,-1],[0,0],[1,1]],
+						[[-1,-1],[-1,1],[0,0],[1,-1]]
+					],[//Z型   
+						[[0,1],[-1,0],[0,-1],[-1,-2]],
+						[[0,-1],[1,0],[0,1],[1,2]]
+					],[//反Z型
+						[[-1,0],[-2,-1],[1,0],[0,-1]],
+						[[1,0],[2,1],[-1,0],[0,1]]
+					],[//线型
+						[[-2,2],[-1,1],[0,0],[1,-1]],
+						[[2,-2],[1,-1],[0,0],[-1,1]]
+					],[//田型
+						[[0,0],[0,0],[0,0],[0,0]]
+					]
+				];
+				//取出转态转换索引表中的“下一状态”值
+				var trueTransTab = divTransTab[this.mod][this.stat];
+				for(var i = 1;i < 5;i++){ 
+					if((this["div"+i].myOffsetY+ trueTransTab[i-1][1])>-1){
+						if(isOver(this["div"+i].myOffsetY + trueTransTab[i-1][1],this["div"+i].myOffsetX + trueTransTab[i-1][0]))
+						return;
+					}											
+				}
+				for(var i = 1;i < 5;i++){
+					this["div"+i].myOffsetX += trueTransTab[i-1][0];
+					this["div"+i].myOffsetY += trueTransTab[i-1][1]
+					this["div"+i].style.left = this["div"+i].offsetLeft + trueTransTab[i-1][0]*25 + "px";
+					this["div"+i].style.top = this["div"+i].offsetTop + trueTransTab[i-1][1]*25 + "px";		
+				}
+				//状态值“旋转后”增加1，达到上限时置零，以便下次查找索引表
+				if(this.mod > 5){
+					this.star = 0;
+				}else if(this.mod > 2){
+					this.stat++;
+					if(this.stat > 1){
+						this.stat = 0;
+					}
+				}else{
+					this.stat++;
+					if(this.stat > 3){
+						this.stat = 0;
+					}
+				}
+			},
+			//整体移动函数，参数为方向（left，right，bottom）
+			move:function(moveDire){
+				var offsetLeft = 0;
+				var offsetTop = 0;
+				switch (moveDire) {
+					case "left":
+						// 向左移动
+						offsetLeft = -1;
+						offsetTop = 0;
+						break;
+					case "right":
+						// 向右移动
+						offsetLeft = 1;
+						offsetTop = 0;
+						break;
+					case "bottom":
+						// 向下移动
+						offsetLeft = 0;
+						offsetTop = 1;					
+						break;
+					case "top":
+						// 向上移动
+						offsetLeft = 0;
+						offsetTop = -1;					
+						break;
+					default:
+						// statements_def
+						break;				 
+				}
+				for(var i = 1;i < 5;i++){ 
+					if(this["div"+i].myOffsetY > -1){
+						if(isOver(this["div"+i].myOffsetY + offsetTop,this["div"+i].myOffsetX + offsetLeft)){
+							return false;
+						}
+					}
+				}
+				for(var i = 1;i < 5;i++){
+					this["div"+i].myOffsetX += offsetLeft;
+					this["div"+i].myOffsetY += offsetTop;
+					this["div"+i].style.left = this["div"+i].offsetLeft + offsetLeft * 25 +"px";
+					this["div"+i].style.top = this["div"+i].offsetTop + offsetTop * 25 +"px";
+				}			
+							
+			}
+		};
+
+		/*
+		 *创建一个div
+		 *divCSS，一个对象，存放背景颜色、宽、高等属性
+		 *至少包含以下属性
+		 *{
+		 *	"borderColor":"xxx"
+		 *	"backgroundColor":"xxx"
+		 *}
+		 */	
+		function creatDivBlock(divCSS){
+			var div = document.createElement("div");
+			div.style = "width: 21px;height: 21px;border: 2px solid #B7B9B7;background-color: #6A836C;border-radius: 2px;position: absolute;left: 0;top: 0;";
+			//相对于父元素的偏移单位（格子数）
+			div.myOffsetX = 0;
+			div.myOffsetY = 0;
+			div.down = function(){
+				this.myOffsetY++;
+				this.style.top = this.offsetTop + 25 + 'px';
+			}
+			if(arguments.length == 1){
+				div.style.borderColor = divCSS.borderColor;
+				div.style.backgroundColor = divCSS.backgroundColor;
+			}
+			return div;
+		}
+		return obj;
+	};
+	var gameTab = initGameTab();
+	var myScore = 0;
+	function initGameTab(){
+		var gameTab = new Array();
+		for(var i = 0; i < 18; i++){
+			gameTab[i] = new Array();
+			for(var j = 0; j < 10; j++){
+				gameTab[i][j] = 0;			
+			}
+		}
+		return gameTab;
+	}
+	// console.log(gameTab)
+	var a = 0;
+	function myFun(next){
+		if(arguments.length == 1){
+			var dg = next;				
+		}else{
+			var dg = creatDivGroup();
+			dg.setViewPosition();
+			for(var i = 1;i<5;i++){
+				$("#next").append(dg["div"+i]);
+			}	
+		}
+		//当方块放不进去游戏界面时，结束游戏
+		if(dg.setGamePosition()==false)
+			return false;
+		//新生成一组方块，
+		var nextGroup = creatDivGroup();
+		nextGroup.setViewPosition();
+		for(var i = 1;i<5;i++){
+			//将新生成的一组方块放入next栏内
+			$("#next").append(nextGroup["div"+i]);
+			//将原next框内的一组方块放入游戏区
+			$("#boxRight").append(dg["div"+i]);
+		}		
+		window.onkeydown = function(e){
+			switch (e.keyCode) {
+				case 37:
+					// 左移一个单位
+					dg.move("left");
+					break;
+				case 38:
+					// 旋转一次
+					dg.next();
+					break;
+				case 39:
+					// 右移一个单位
+					dg.move("right");
+					break;
+				case 40:
+					// 加速下移
+					dg.move("bottom");
+					break;
+				default:
+					// statements_def
+					break;
+			}
+		}	
+
+		//相对于给这个方块添加一个运动事件
+		var timer = setInterval(function(){	
+			window.addEventListener("keydown", function(e){
+				if(e.keyCode == 32)
+					clearInterval(timer);
+			}) 							
+			if(dg.move("bottom")==false){
+				console.log('方块信息录入gameTab表前')
+				for(var s = 0; s < gameTab.length; s++){
+					console.log(gameTab[s].toString())
+				}
+				//给gameTab表添加1，表明该方块已停止
+				for(var i = 1;i  <5;i++){
+					if(dg['div'+i].myOffsetY>-1){
+						
+						gameTab[dg['div'+i].myOffsetY][dg['div'+i].myOffsetX] = 1;
+						console.log('第'+dg['div'+i].myOffsetY+"行第"+dg['div'+i].myOffsetX+"列写入一次");
+					}
+				}
+				console.log('方块信息录入gameTab表后')
+				for(var s = 0; s < gameTab.length; s++){
+					console.log(gameTab[s].toString())
+				}	
+				removeLine();
+				scoreView.innerHTML = myScore;
+				clearInterval(timer);
+				myFun(nextGroup);	
+			}						
+		},1000)				
+	}
+	//根据给定的行号和列号查找是否存在“小方块”，返回true或false
+	function isOver(row,column){
+		if(row > 17||column > 9||column < 0){
+			return true;
+		}
+		if(gameTab[row][column] == 1){
+			return true;
+		}
+		else
+			return false;
+	}
+	$("#star").click(function(event) {		
+		myFun();
+		$("#star").css('display','none');
+		$("#star").off("click");
+	});
+	function removeLine(){
+		var num = 0;
+		var myRow = new Array();
+		
+		//找到满一行的行号
+		for(var i = 0; i < 18; i++){
+			for(var j = 0; j < 10; j++){
+				if(gameTab[i][j] == 1)
+					num++;
+			}			
+			if(num == 10){
+				myRow.push(i);
+				myScore++;			
+				gameTab[i] = [0,0,0,0,0,0,0,0,0,0];
+			}
+			num = 0;
+		}
+		//没找到则return
+		if(myRow.length == 0){
+			return false;
+		}
+		console.log('gameTab表改变之前')
+		for(var s = 0; s < gameTab.length; s++){
+			console.log(gameTab[s].toString())
+		}	
+		var swapTab = new Array();
+		var aIndex = 0;
+		for(var i = aIndex = myRow[myRow.length-1]; i > -1; i--,aIndex--){
+			for(var j = myRow.length-1; j > -1; j--){
+				if(aIndex == myRow[j])
+					aIndex--;
+			}
+			if(aIndex < 0){
+				gameTab[i] = [0,0,0,0,0,0,0,0,0,0];			
+			}else{
+				gameTab[i] = gameTab[aIndex];
+				//i:目的  aIndex：源（一般是下移，所以a>aIndex）
+				swapTab.push([i,aIndex]);
+			}						
+		}
+		console.log('gameTab表改变之后')
+		for(var s = 0; s < gameTab.length; s++){
+			console.log(gameTab[s].toString())
+		}
+		var boxRight = document.getElementById('boxRight');
+		var c = boxRight.getElementsByTagName('div');
+		//移除满行的所有元素
+		for(var i = 0; i < c.length; i++){				
+			for(var j = 0; j < myRow.length; j++){
+				if(c[i].myOffsetY == myRow[j]){
+					c[i].remove();
+					i--;
+					break;
+				}
+			}	
+		}						
+		for(var i = 0; i < c.length; i++){		
+			for(var j = 0; j < swapTab.length; j++){
+				if(c[i].myOffsetY == swapTab[j][1]){
+					for(var k = 0; k < swapTab[j][0]-swapTab[j][1];k++){
+						c[i].down();
+					}
+					break;
+				}
+			}
+		}
+	}	
+	//随机数生成，随机生成8中样式中的一种
+	function randomNum(minNum,maxNum){ 
+	    switch(arguments.length){ 
+	        case 1: 
+	            return parseInt(Math.random()*minNum+1,10); 
+	        break; 
+	        case 2: 
+	            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+	        break; 
+	            default: 
+	                return 0; 
+	            break; 
+	    } 
+	} 
+		
+
+	
+		
+</script>
 </html>
