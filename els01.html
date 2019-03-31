@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,height=device-height">
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+	<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+	<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+	<title>视图</title>
+	<style>
+		ul li{
+		}		
+		a{
+			text-decoration: none;
+			font-size: 24px;
+		}
+		#cp{
+			width: 60%;
+			position: absolute;
+			left: 20%;
+			top: 0;
+		}
+		#lt{
+			width: 20%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.leftlb{
+			height: 60px;
+			width: 100%;
+			position: relative;
+			border-radius: 8px;
+			left: 20px;
+			text-align: center;
+			font-size: 20px;
+			line-height: 60px;			
+		}
+		.leftlb:hover{
+			cursor: pointer;
+			background-color: #90E3E3;
+		}
+		#ttpp{
+			height: 60px;
+			width: 100%;
+			position: relative;
+			left: 0;
+			top: 0;
+		}
+		.mse{
+			height: 36px;
+			width:100px;
+			position: relative;
+			left: 60px;
+			top: 20px;
+			font-size: 16px;
+		}
+		.bbb{
+			height: 60px;
+			width: 100%;
+			position: relative;
+			border-radius: 8px;
+			left: 20px;
+			text-align: center;
+			font-size: 20px;
+			line-height: 60px;	
+		}
+		#can{
+			width: 500px;
+			height: 400px;
+		}
+		#rrr{
+			position: absolute;
+			left: 80%;
+			top: 0;
+		}
+		.skill{
+			height: 60px;
+			width: 100%;
+			position: relative;
+			border-radius: 8px;
+			left: 20px;
+			font-size: 20px;
+			line-height: 60px;	
+		}
+	</style>
+</head>
+<body>
+	<div id="lt">
+		<div id="lbbb">
+			<div class="bbb">
+				<input type="text">
+				<button>搜索</button>
+			</div>
+			<div class="leftlb">操作系统</div>
+			<div class="leftlb">数据库原理</div>
+			<div class="leftlb">算法与数据结构</div>
+			<div class="leftlb">软件工程</div>
+			<div class="leftlb">Java语言</div>
+		</div>
+	</div>
+	<div id="cp">
+		<div id="ttpp">
+			<select name="" class="mse">
+				<option value="第一套题">第一套题</option>
+				<option value="第二套题">第二套题</option>
+				<option value="第三套题">第三套题</option>
+			</select>
+			<select name="" class="mse" onchange="myChange(this.value)">
+				<option value="0">默认排序</option>
+				<option value="1">升序</option>
+				<option value="2">降序</option>
+			</select>
+		</div>
+		<div id="can">
+			<div id="mountNode"></div>
+		</div>
+	</div>
+	<div id="rrr">
+		<div class="skill">不及格知识点</div>
+		<ul><li>链表</li><li>排序算法</li><li>栈和队列</li></ul>
+		<div class="skill">熟练掌握的知识点</div>
+		<ul><li>二叉树</li></ul>
+	</div>
+</body>
+<script>
+	var data = [{
+	  "name": "个人成绩",
+	  "科目": "链表",
+	  "score": 23
+	}, {
+	  "name": "个人成绩",
+	  "科目": "栈和队列",
+	  "score": 45
+	}, {
+	  "name": "个人成绩",
+	  "科目": "二叉树",
+	  "score": 54
+	}, {
+	  "name": "个人成绩",
+	  "科目": "图的概念",
+	  "score": 12
+	}, {
+	  "name": "个人成绩",
+	  "科目": "排序算法",
+	  "score": 28
+	}, {
+	  "name": "平均成绩",
+	  "科目": "链表",
+	  "score": 44
+	}, {
+	  "name": "平均成绩",
+	  "科目": "栈和队列",
+	  "score": 50
+	}, {
+	  "name": "平均成绩",
+	  "科目": "二叉树",
+	  "score": 31
+	}, {
+	  "name": "平均成绩",
+	  "科目": "图的概念",
+	  "score": 10
+	}, {
+	  "name": "平均成绩",
+	  "科目": "排序算法",
+	  "score": 36
+	}];
+	var chart = new G2.Chart({
+	  container: 'mountNode',
+	  forceFit: true,
+	  height: "500"
+	});
+	
+	chart.source(data);
+	chart.interval().position('科目*score').color('name',["#1FA7A5","#930FB2"]).adjust([{
+	  type: 'dodge',
+	  marginRatio: 1 / 32
+	}]);
+	chart.render();
+
+	function objSort(objArr,key,way=true){
+		for(let i=0;i<objArr.length-1;i++){
+			for(let j=0;j<objArr.length-1-i;j++){
+				if((objArr[j][key]>objArr[j+1][key])==way){
+					let ex = objArr[j];
+					objArr[j] = objArr[j+1];
+					objArr[j+1] = ex;
+				}
+			}
+		}
+		return objArr;
+	}
+
+
+
+	function myChange(value){
+		if(value == 1){
+			chart.changeData(objSort(data,"score"))
+		}
+		else{
+			chart.changeData(objSort(data,"score",false))
+		}
+	}
+</script>
+</html>
