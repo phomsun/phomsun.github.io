@@ -1,0 +1,56 @@
+#main{
+	width:720px;
+	height:600px;
+	margin:50px auto;
+	border-left:2px solid #40AFCB;
+	border-right:2px solid #40AFCB;
+	position: relative;
+	background-color: #D8FFAF;
+}
+.book{
+	float:left;
+	margin:20px 30px;
+	position: relative;
+	transition: 0.2s;
+}
+.book>img{
+	width:80px;
+	height:110px ;
+	position: absolute;
+	z-index: 9999
+}
+.book:hover{
+	transform: scale(1.1,1.1);
+}
+.book>div{
+	position: absolute;
+	top:0px;left:50px;
+	height:110px;
+	width:30px;
+	transition: 0.2s;
+	z-index:0;
+	background-color: #CBC6CE;	
+
+}
+.book:hover>div{
+	transform: translateX(30px);
+}
+.like img{
+	width:30px;
+	height:30px;
+	position: absolute;
+	top:10px
+}
+.delete img{
+	width:30px;
+	height:30px;
+	position: absolute;
+	top:70px
+}
+.like:hover img{
+	cursor:pointer;
+}
+.delete:hover img{
+	background-color: #214093;
+	cursor:pointer;
+}
