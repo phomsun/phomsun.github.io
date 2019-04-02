@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lng="en">
+<hed>
+	<met chrset="UTF-8">
+	<title>主页</title>
+	<link rel="stylesheet" href="css/nav.css">	
+	<link rel="stylesheet" href="css/read.css">
+	<script>
+		window.onload=function(){
+			main=document.getElementById("main");
+			arri=main.getElementsByTagName("i");
+			for(var i=0;i<arri.length;i++){
+				arri[i].getElementsByTagName("img")[0].like=false;
+				arri[i].getElementsByTagName("img")[0].onclick=function(){
+					if(this.like){
+						this.src="img/ulike.png";
+						this.like=false;
+					}else{
+						this.src="img/like.png";
+						this.like=true;
+					}					
+				}
+			}
+		}
+	</script>
+</hed>
+<body>
+	<div class="head">
+		<a href="">ISC</a>
+		<div class="search">
+			<input type="text" placeholder="搜索" >
+			<button>搜索</button>
+		</div>
+	</div>
+	<div class="navigation">
+		<ul>
+			<li><a href="../read.html">书架</a></li>
+			<li>
+				<a href="html/wenxue_xiaoshuo.html">文学</a>
+				<div class="tag">				
+					<ul>
+						<li><a href="html/wenxue_xiaoshuo.html">小说</a></li>
+						<li><a href="html/wenxue_sanwen.html">散文</a></li>
+						<li><a href="html/wenxue_mingzhu.html">名著</a></li>
+						<!-- <li><a href="">more</a></li> -->					
+					</ul>	
+				</div>			
+			</li>
+			<li>
+				<a href="html/liuxing_manhua.html">流行</a>
+				<div class="tag">				
+					<ul>
+						<li><a href="html/liuxing_manhua.html">漫画</a></li>
+						<li><a href="html/liuxing_yanqing.html">言情</a></li>
+						<li><a href="html/liuxing_kehuan.html">科幻</a></li>
+						<li><a href="html/liuxing_wuxia.html">武侠</a></li>
+						<li><a href="html/liuxing_tuili.html">推理</a></li>					
+					</ul>	
+				</div>
+			</li>
+			<li>
+				<a href="html/wenhua_lishi.html">文化</a>
+				<div class="tag">				
+					<ul>
+						<li><a href="html/wenhua_lishi.html">历史</a></li>
+						<li><a href="html/wenhua_zhexue.html">哲学</a></li>
+						<li><a href="html/wenhua_zhuanji.html">传记</a></li>					
+					</ul>	
+				</div>
+			</li>
+			<li>
+				<a href="#">科技</a>
+				<div class="tag">				
+					<ul>
+						<li><a href="#">科普</a></li>
+						<li><a href="#">通信</a></li>
+						<li><a href="#">编程</a></li>					
+					</ul>	
+				</div>
+			</li>
+			<li>
+				<a href="#">生活</a>
+				<div class="tag">				
+					<ul>
+						<li><a href="#">职场</a></li>
+						<li><a href="#">美食</a></li>
+						<li><a href="#">理财</a></li>
+						<li><a href="#">教育</a></li>					
+					</ul>	
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div id="main">
+		<h2>我的收藏</h2>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/mingzhu/hlm.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>				
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/xiaoshuo/zfzdr.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/manhua/bln.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/kehuan/hxjy.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/kehuan/st.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/tuili/byx.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>
+		<div class="book" style="width:80px;height:110px;">
+			<img src="img/lishi/essj.jpg" alt="">
+			<div>
+				<i class="like"><img src="img/ulike.png" alt=""></i>
+				<div class="delete"><img src="img/delete.png" alt="" ></div>
+			</div>
+		</div>	
+	</div>
+	<div id="footer">
+		<div class="f_main">
+			<ul>
+				<li><a href="../read.html">首页</a>|</li>
+				<li><a href="#">关于我们</a>|</li>
+				<li><a href="#">联系我们</a>|</li>
+				<li><a href="#">反馈问题</a>|</li>
+				<li><a href="#">常见问题</a></li>
+			</ul>
+		</div>
+	</div>
+	
+
+</body>
+</html>
