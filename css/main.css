@@ -1,0 +1,141 @@
+.main{
+	position: relative;
+	margin:50px auto;
+	width:1000px;
+	height:640px;
+}
+/*左边目录*/
+.list{
+	padding:15px;
+	position: absolute;
+	top:0px;left:0px;
+	width:150px;
+	height:400px;
+	border-right:1px solid #4D7612;						
+}
+.list ul{
+	border-top:4px solid green;
+	padding-left:15px;		
+}
+.list ul li{
+	margin:10px 5px;
+	font-size: 21px;
+	letter-spacing: 10px;		
+}
+.list ul li:hover{
+	background-color: #439B9D;		
+}
+/*中间内容*/
+.slide{
+	height:50px;
+	display:none;
+	position: absolute;
+	top:40px;
+	right:70px;
+	padding:5px 10px;
+}
+.slide i{
+	height:0px;					
+	width:0px;
+	border:6px solid rgba(180,31,31,0.3);
+	border-radius: 6px;
+	float: left;
+	margin: 5px 16px;
+}
+.prev{
+	width:25px;
+	height:20px;					
+	background-image: url("../icon/prev1.png");
+	background-size: 100% 100%;
+	transition:0.3s;
+	position: absolute;
+	left:-10px;
+	
+}
+.prev:hover{
+	transform:scale(1.2,1.2);
+	background-image: url("../icon/prev2.png");
+	cursor:pointer;		
+}
+ .next{
+	position: absolute;
+	right:-10px;
+	width:25px;
+	height:20px;
+	background-image: url("../icon/next1.png");
+	background-size: 100% 100%;
+	transition:0.3s;					
+}
+.next:hover{
+	transform:scale(1.2,1.2);
+	background-image: url("../icon/next2.png");
+	cursor:pointer;		
+}
+.mainbook{
+	position: absolute;
+	top:0px;left:200px;
+	width:600px;
+	/*height:540px;*/
+	/*border:1px solid green;*/
+}
+.mainbook h2{
+	margin-top: 35px;
+	margin-left: 40px;
+}
+/*书籍信息框*/
+.mainbook .book{
+	margin:40px 0px 0px 35px;
+	width:247.5px;
+	height:170px;
+/*	border:1px solid red;*/
+	float:left;
+	
+}
+.book img{
+	width:69px;
+	height:96px;
+	float:left;
+}
+.book p{
+	font-size: 12px;
+}
+.book>a{
+	margin:0px 15px;
+}
+.book a:hover{
+	color:#E3DBDE;
+	background-color: #5DDBC1;
+}
+
+.book .author{
+	padding:10px 0px;
+}
+.book .bookinfo{
+	padding-top:10px;
+	clear: both;
+}
+/*右边排行*/
+.rank{
+	padding:15px;
+	position: absolute;
+	top:0px;right:0px;
+	width:150px;
+	height:400px;
+	border-left:1px solid #4D7612;
+}
+.rank li a{
+	color:#0F71A2;
+	font-size:14px;
+}
+.rank ol{
+	padding-left:25px;
+}
+.rank li a:hover{
+	color:#E3E8EA;
+	background-color: #0A12CB;
+}
+
+
+
+
+
