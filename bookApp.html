@@ -14,13 +14,104 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<style>
-			
+		.sun-panel{
+			width: 100%;
+			height:100%;
+			position: absolute;
+			background-color: #FAFAFA;
+		}
 	</style>
 	<title>图书在线阅读</title>
 </head>
 <body>
 
+	<div style="height:590px;">
+		<div class="sun-panel" style="z-index: 3;">
+			<!-- Standard button -->
+			<button type="button" class="btn btn-default">（默认样式）Default</button>
 
+			<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+			<button type="button" class="btn btn-primary">（首选项）Primary</button>
+
+			<!-- Indicates a successful or positive action -->
+			<button type="button" class="btn btn-success">（成功）Success</button>
+
+			<!-- Contextual button for informational alert messages -->
+			<button type="button" class="btn btn-info">（一般信息）Info</button>
+
+			<!-- Indicates caution should be taken with this action -->
+			<button type="button" class="btn btn-warning">（警告）Warning</button>
+
+			<!-- Indicates a dangerous or potentially negative action -->
+			<button type="button" class="btn btn-danger">（危险）Danger</button>
+
+			<!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+			<button type="button" class="btn btn-link">（链接）Link</button>
+		</div>
+		<div class="sun-panel" style="z-index: 1;">
+			<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="#">Brand</a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav">
+			        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+			        <li><a href="#">Link</a></li>
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			            <li><a href="#">Action</a></li>
+			            <li><a href="#">Another action</a></li>
+			            <li><a href="#">Something else here</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#">One more separated link</a></li>
+			          </ul>
+			        </li>
+			      </ul>
+			      <form class="navbar-form navbar-left">
+			        <div class="form-group">
+			          <input type="text" class="form-control" placeholder="Search">
+			        </div>
+			        <button type="submit" class="btn btn-default">Submit</button>
+			      </form>
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="#">Link</a></li>
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			            <li><a href="#">Action</a></li>
+			            <li><a href="#">Another action</a></li>
+			            <li><a href="#">Something else here</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			          </ul>
+			        </li>
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+		</div>
+		<div class="sun-panel" style="z-index: 1;">
+			<form class="navbar-form navbar-left" role="search">
+			  <div class="form-group">
+			    <input type="text" class="form-control" placeholder="Search">
+			  </div>
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container-fluid">
 	    <div class="row">
@@ -48,16 +139,31 @@
 </body>
 <script>
 	var nav_a = document.getElementsByClassName("mya");
-	for(let a of nav_a){
-		a.onclick = function(){
+	var sun_panel = document.getElementsByClassName("sun-panel");
+	for(ind in nav_a){
+		let mi = ind;
+		nav_a[ind].onclick = function(){
+			console.log(mi)
 			clear_nav_a();
 			this.style.color = "#AD0D36";
+			showPanel(mi);
 			
 		}
 	}
 	function clear_nav_a(){
 		for(let a of nav_a){
 			a.style.color = "#6A737D";
+		}
+	}
+	function showPanel(index){
+		if(index>sun_panel.length-1)
+			throw "下标越界";
+		for(i in sun_panel){
+			if(i==index){
+				sun_panel[i].style.zIndex = "3";
+			}else{
+				sun_panel[i].style.zIndex = "1";
+			}
 		}
 	}
 </script>
