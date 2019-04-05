@@ -51,6 +51,9 @@
 
 			<!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
 			<button type="button" class="btn btn-link">（链接）Link</button>
+
+			<p>手机高度为：</p>
+			<p id="showheight"></p>
 		</div>
 		<div class="sun-panel" style="">
 			<nav class="navbar navbar-default">
@@ -187,6 +190,7 @@
 		// console.log(hrt);
 		// $('body').height(hrt+'px');
 		document.getElementById("zpan").style.height = window.screen.height - 50 + "px";;
+		document.getElementById("showheight").innerHTML = window.screen.height +"px";
 		// init_panel();
 		// minp.onfocus = function(){
 		// 	document.getElementsByTagName("nav")[1].style.position = 'absolute';			
