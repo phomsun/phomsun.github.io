@@ -152,7 +152,7 @@
 			<p>sadsda</p>
 		</div>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom" style="position: absolute;">
+	<nav class="navbar navbar-default navbar-fixed-bottom" style="">
 	  <div class="container-fluid">
 	    <div class="row">
 			<div class="col-xs-4 text-center">
@@ -184,10 +184,10 @@
 		var minp = document.getElementById("minp");
 		init_panel(sun_panel);
 		minp.onfocus = function(){
-			document.getElementsByTagName("nav")[0].style.position = 'absolute';			
+			document.getElementsByTagName("nav")[1].style.position = 'absolute';			
 		}
 		minp.onblur = function(){
-			document.getElementsByTagName("nav")[0].style.position = 'fixed';
+			document.getElementsByTagName("nav")[1].style.position = 'fixed';
 		}		
 		for(ind in nav_a){
 			let mi = ind;
