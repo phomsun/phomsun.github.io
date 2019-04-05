@@ -19,6 +19,7 @@
 			height:590px;
 			position: absolute;
 			background-color: #FAFAFA;
+			display: none;
 		}
 	</style>
 	<title>图书在线阅读</title>
@@ -26,7 +27,7 @@
 <body>
 
 	<div style="height:590px;">
-		<div class="sun-panel" style="z-index: 3;">
+		<div class="sun-panel" style="display: block;">
 			<!-- Standard button -->
 			<button type="button" class="btn btn-default">（默认样式）Default</button>
 
@@ -48,7 +49,7 @@
 			<!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
 			<button type="button" class="btn btn-link">（链接）Link</button>
 		</div>
-		<div class="sun-panel" style="z-index: 1;">
+		<div class="sun-panel" style="">
 			<nav class="navbar navbar-default">
 			  <div class="container-fluid">
 			    <!-- Brand and toggle get grouped for better mobile display -->
@@ -103,7 +104,7 @@
 			  </div><!-- /.container-fluid -->
 			</nav>
 		</div>
-		<div class="sun-panel" style="z-index: 1;">
+		<div class="sun-panel" style="">
 			<form class="navbar-form navbar-left" role="search" style="margin: 0;">
 			  <div class="form-group">
 			    <input type="text" class="form-control" placeholder="Search">
@@ -112,11 +113,11 @@
 			</form>
 		</div>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom" style="position: fixed;">
+	<nav class="navbar navbar-default" style="">
 	  <div class="container-fluid">
 	    <div class="row">
 			<div class="col-xs-4 text-center">
-				<a href="#" class="mya" style="text-decoration: none;color:#6A737D;">
+				<a href="#" class="mya" style="text-decoration: none;color:#AD0D36;">
 		          <span class="glyphicon glyphicon-home" style="display: block;margin-top: 8px;color: inherit;"></span>
 		          <span class="text-primary" style="display: block;color: inherit;">主页</span>
 		        </a>
@@ -158,11 +159,12 @@
 	function showPanel(index){
 		if(index>sun_panel.length-1)
 			throw "下标越界";
-		for(i in sun_panel){
+		for(let i=0;i<sun_panel.length;i++){
 			if(i==index){
-				sun_panel[i].style.zIndex = "3";
-			}else{
-				sun_panel[i].style.zIndex = "1";
+				for(let j=0;j<sun_panel.length;j++){
+					sun_panel[j].style.display = 'none';
+				}
+				sun_panel[i].style.display = "block";
 			}
 		}
 	}
