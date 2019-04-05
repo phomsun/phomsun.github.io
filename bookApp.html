@@ -29,7 +29,7 @@
 </head>
 <body>
 
-	<div style="height:100%;">
+	<div id ="zpan" style="">
 		<div class="sun-panel" style="display: block;">
 			<!-- Standard button -->
 			<button type="button" class="btn btn-default">（默认样式）Default</button>
@@ -152,7 +152,7 @@
 			<p>sadsda</p>
 		</div>
 	</div>
-	<nav class="navbar navbar-default navbar-fixed-bottom" style="position: absolute;margin-bottom: 0;bottom: 0;">
+	<nav class="navbar navbar-default navbar-fixed-bottom" style="position: static;margin-bottom: 0;margin-left: 0;">
 	  <div class="container-fluid">
 	    <div class="row">
 			<div class="col-xs-4 text-center">
@@ -182,7 +182,12 @@
 		var nav_a = document.getElementsByClassName("mya");
 		var sun_panel = document.getElementsByClassName("sun-panel");
 		var minp = document.getElementById("minp");
-		init_panel(sun_panel);
+
+		// var hrt = $(window).height(); //获取当前可视区域的高度存到hrt的变量里。
+		// console.log(hrt);
+		// $('body').height(hrt+'px');
+		document.getElementById("zpan").style.height = window.screen.height - 50 + "px";;
+		// init_panel();
 		// minp.onfocus = function(){
 		// 	document.getElementsByTagName("nav")[1].style.position = 'absolute';			
 		// }
