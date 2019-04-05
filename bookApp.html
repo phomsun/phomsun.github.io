@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,height=device-height">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -14,6 +14,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<style>
+		body{
+			height:100%;
+		}
 		.sun-panel{
 			width: 100%;
 			height:590px;
@@ -26,7 +29,7 @@
 </head>
 <body>
 
-	<div style="height:590px;">
+	<div style="height:100%;">
 		<div class="sun-panel" style="display: block;">
 			<!-- Standard button -->
 			<button type="button" class="btn btn-default">（默认样式）Default</button>
@@ -104,16 +107,52 @@
 			  </div><!-- /.container-fluid -->
 			</nav>
 		</div>
-		<div class="sun-panel" style="">
+		<div class="sun-panel" style="overflow-y: scroll;">
 			<form class="navbar-form navbar-left" role="search" style="margin: 0;">
 			  <div class="form-group">
-			    <input type="text" class="form-control" placeholder="Search">
+			    <input id="minp" type="text" class="form-control" placeholder="Search">
 			  </div>
 			  <button type="submit" class="btn btn-default">Submit</button>
 			</form>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
+			<p>sadsda</p>
 		</div>
 	</div>
-	<nav class="navbar navbar-default" style="">
+	<nav class="navbar navbar-default navbar-fixed-bottom" style="">
 	  <div class="container-fluid">
 	    <div class="row">
 			<div class="col-xs-4 text-center">
@@ -139,24 +178,39 @@
 	</nav>
 </body>
 <script>
-	var nav_a = document.getElementsByClassName("mya");
-	var sun_panel = document.getElementsByClassName("sun-panel");
-	for(ind in nav_a){
-		let mi = ind;
-		nav_a[ind].onclick = function(){
-			console.log(mi)
-			clear_nav_a();
-			this.style.color = "#AD0D36";
-			showPanel(mi);
-			
+	window.onload = function(){
+		var nav_a = document.getElementsByClassName("mya");
+		var sun_panel = document.getElementsByClassName("sun-panel");
+		var minp = document.getElementById("minp");
+		init_panel(sun_panel);
+		minp.onfocus = function(){
+			console.log(document.getElementsByTagName("nav")[0].style.position);
+			document.getElementsByTagName("nav")[0].style.position = 'absolute';			
+		}
+		minp.onblur = function(){
+			document.getElementsByTagName("nav")[0].style.position = 'fixed';
+		}		
+		for(ind in nav_a){
+			let mi = ind;
+			nav_a[ind].onclick = function(){
+				clear_nav_a(nav_a);
+				this.style.color = "#AD0D36";
+				showPanel(sun_panel,mi);
+				
+			}
 		}
 	}
-	function clear_nav_a(){
+	function init_panel(sun_panel){
+		for(let p of sun_panel){
+			p.style.height = window.screen.height - 50 + "px";
+		}
+	}
+	function clear_nav_a(nav_a){
 		for(let a of nav_a){
 			a.style.color = "#6A737D";
 		}
 	}
-	function showPanel(index){
+	function showPanel(sun_panel,index){
 		if(index>sun_panel.length-1)
 			throw "下标越界";
 		for(let i=0;i<sun_panel.length;i++){
