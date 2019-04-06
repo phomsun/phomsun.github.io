@@ -24,9 +24,36 @@
 			overflow-y: scroll;
 		}
 		.mimg{
-			width: 360px;
-			
+			width: 360px;	
+		}
+		#flagPanel{
+			width: 90px;
+			height: 4px;
+			position: absolute;
+			bottom: 5px;
+			left: 50%;
+			transform: translateX(-50%);
 
+			display: inline;
+			/*font-size: 0;*/
+
+		}
+		.flagPoint{
+			height: 4px;
+			width: 20px;
+			border-radius: 2px;
+			background-color: #FFFFFF;
+			display: inline-block;
+			margin-right: 5px;
+			margin-left: 5px;
+		}
+		#img-panel{
+			position: relative;
+			left: 0px;
+			top: 0px;
+			width: 1440px;
+			transition-duration: 700ms;
+			transition-timing-function: ease-out;
 		}
 	</style>
 	<title>图书在线阅读</title>
@@ -35,18 +62,24 @@
 
 	<div id ="zpan" style="">
 		<div class="sun-panel" style="display: block;">		
-			<div style="position: relative;width: 360px;height: 143px; overflow-x:scroll;font-size: 0;">
-				<div style="width: 1080px;">
+			<div style="position: relative;width: 360px;height: 143px; overflow: hidden;font-size: 0;">
+				<div id="img-panel">
 					<img src="img/cycimg/rgkyzya.jpg" alt="..." class="img-rounded mimg">
 					<img src="img/cycimg/tqz.jpg" alt="..." class="img-rounded mimg">
 					<img src="img/cycimg/yhdsy.png" alt="..." class="img-rounded mimg">
+					<img src="img/cycimg/rgkyzya.jpg" alt="..." class="img-rounded mimg">
+				</div>
+				<div id="flagPanel">
+					<div class="flagPoint" style="background-color: #640539"></div>
+					<div class="flagPoint" style=""></div>
+					<div class="flagPoint" style=""></div>
 				</div>
 				
 			</div>
 			<div class="input-group">
 		      <input type="text" class="form-control" placeholder="Search for...">
 		      <span class="input-group-btn">
-		        <button class="btn btn-default" type="button">Go!</button>
+		        <button class="btn btn-default" type="button" >Search</button>
 		      </span>
 		    </div>	
 		</div>
@@ -176,37 +209,35 @@
 	</nav>
 </body>
 <script>
-	window.onload = function(){
-		var nav_a = document.getElementsByClassName("mya");
-		var sun_panel = document.getElementsByClassName("sun-panel");
-		var minp = document.getElementById("minp");
+	
+	var nav_a = document.getElementsByClassName("mya");
+	var sun_panel = document.getElementsByClassName("sun-panel");
+	var minp = document.getElementById("minp");
+	var imgPanel = document.getElementById("img-panel");
+	var flagPoints = document.getElementsByClassName("flagPoint");
+	const PIC_WIDTH = 360;
+	var pic_num = 0;
+	//设置可视窗口高度
+	document.getElementById("zpan").style.height = document.documentElement.clientHeight - 50 + "px";
 
-		// var hrt = $(window).height(); //获取当前可视区域的高度存到hrt的变量里。
-		// console.log(hrt);
-		// $('body').height(hrt+'px');
-		document.getElementById("zpan").style.height = document.documentElement.clientHeight - 50 + "px";
-		// init_panel();
-		// minp.onfocus = function(){
-		// 	document.getElementsByTagName("nav")[1].style.position = 'absolute';			
-		// }
-		// minp.onblur = function(){
-		// 	document.getElementsByTagName("nav")[1].style.position = 'fixed';
-		// }		
-		for(ind in nav_a){
-			let mi = ind;
-			nav_a[ind].onclick = function(){
-				clear_nav_a(nav_a);
-				this.style.color = "#AD0D36";
-				showPanel(sun_panel,mi);
-				
-			}
+	//底部导航栏点击事件绑定	
+	for(ind in nav_a){
+		let mi = ind;
+		nav_a[ind].onclick = function(){
+			clear_nav_a(nav_a);
+			this.style.color = "#AD0D36";
+			showPanel(sun_panel,mi);
+			
 		}
 	}
-	function init_panel(sun_panel){
-		for(let p of sun_panel){
-			p.style.height = window.screen.height - 50 + "px";
-		}
+	for(let i = 0; i < flagPoints.length; i++){
+		//给下面的小点点编号
+		flagPoints[i].myIndex = i;
 	}
+
+	var picTimer = setInterval(nextPic,2000)
+
+	
 	function clear_nav_a(nav_a){
 		for(let a of nav_a){
 			a.style.color = "#6A737D";
@@ -223,6 +254,27 @@
 				sun_panel[i].style.display = "block";
 			}
 		}
+	}
+	function nextPic(){
+		
+		if(pic_num == flagPoints.length){					
+			let otd = imgPanel.style.transitionDuration;				
+			imgPanel.style.transitionDuration = "0s";				
+			imgPanel.style.left = "0px";	
+			pic_num = 0;			
+			if(imgPanel.offsetLeft === 0){
+				imgPanel.style.transitionDuration = otd;	
+			}
+		}		
+		imgPanel.style.left = ++pic_num * -PIC_WIDTH + "px";
+		pic_num == flagPoints.length?setPoint(0):setPoint(pic_num);
+		
+	}
+	function setPoint(pno){
+		for(let i = 0; i < flagPoints.length; i++){
+			flagPoints[i].style.backgroundColor="#FFFFFF";
+		}
+		flagPoints[pno].style.backgroundColor = "#640539";
 	}
 </script>
 </html>
